@@ -1,5 +1,6 @@
 import 'package:architechrure/model/post_model.dart';
 import 'package:architechrure/services/http_request.dart';
+import 'package:architechrure/viewmodel/createviewmodel.dart';
 import 'package:flutter/material.dart';
 
 class CreatPage extends StatefulWidget {
@@ -11,28 +12,7 @@ class CreatPage extends StatefulWidget {
 }
 
 class _CreatPageState extends State<CreatPage> {
-  bool isLoading = false;
-  var titleController = TextEditingController();
-  var postController = TextEditingController();
-
-  _apiCreatPost () async{
-    setState(() {
-      isLoading = true;
-    });
-    String title = titleController.text.trim().toString();
-    String body = postController.text.trim().toString();
-    Post post = Post(title: title, body: body, userId: 1);
-    var response =  await Network.POST(Network.API_CREATE, Network.paramsCreate(post));
-    print (response);
-    setState(() {
-      isLoading = false;
-      if (response != null) {
-        Navigator.pop(context, response);
-      } else {
-        print ("Not created");
-      }
-    });
-  }
+  Createviewmodel viewmodel=Createviewmodel();
 
 
   @override
@@ -52,7 +32,7 @@ class _CreatPageState extends State<CreatPage> {
                     height: 40,
                     width: double.infinity,
                     child: TextField(
-                      controller: titleController,
+                      controller: viewmodel.titleController,
                       decoration: InputDecoration(
                         labelText: "Title",
                         border: OutlineInputBorder (),
@@ -65,7 +45,7 @@ class _CreatPageState extends State<CreatPage> {
                     height: 100,
                     width: double.infinity,
                     child: TextField(
-                      controller: postController,
+                      controller: viewmodel.postController,
                       decoration: InputDecoration(
                         labelText: "Post",
                         border: OutlineInputBorder(),
@@ -74,7 +54,7 @@ class _CreatPageState extends State<CreatPage> {
                   ),
                   RaisedButton(
                     onPressed: (){
-                      _apiCreatPost ();
+                      viewmodel.apiCreatPost (context);
                     },
                     child: Text("Creat post"),
                     color: Colors.blue,
@@ -82,7 +62,7 @@ class _CreatPageState extends State<CreatPage> {
                 ],
               ),
             ),
-            isLoading ? Center (
+            viewmodel.isLoading ? Center (
               child: CircularProgressIndicator(),
             ) : SizedBox.shrink(),
 

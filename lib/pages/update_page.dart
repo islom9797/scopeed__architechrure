@@ -1,5 +1,6 @@
 import 'package:architechrure/model/post_model.dart';
 import 'package:architechrure/services/http_request.dart';
+import 'package:architechrure/viewmodel/updateviewmdoel.dart';
 import 'package:flutter/material.dart';
 
 class UpdatePage extends StatefulWidget {
@@ -14,44 +15,12 @@ class UpdatePage extends StatefulWidget {
 }
 
 class _UpdatePageState extends State<UpdatePage> {
-  bool isLoading = false;
-  var titleController = TextEditingController();
-  var bodyController = TextEditingController();
-  Post oldPost;
-
-  _getOldPost() {
-    setState(() {
-      oldPost = widget.post;
-      titleController.text = oldPost.title;
-      bodyController.text = oldPost.body;
-    });
-  }
-
-  _apiCreatePost() async{
-    setState(() {
-      isLoading = true;
-    });
-
-    String title = titleController.text.trim().toString();
-    String body = bodyController.text.trim().toString();
-    Post post = Post(title: title, body: body, userId: oldPost.userId, id: oldPost.id);
-
-    var response = await Network.PUT(Network.API_UPDATE + oldPost.id.toString(), Network.paramsUpdate(post));
-    print(response);
-    setState(() {
-      isLoading = false;
-      if(response != null) {
-        Navigator.pop(context, response);
-      } else {
-        print("Error");
-      }
-    });
-  }
+  Updateviewmodel viewmodel=Updateviewmodel();
 
   @override
   void initState() {
     super.initState();
-    _getOldPost();
+    viewmodel.getOldPost(widget.post);
   }
 
   @override
@@ -68,7 +37,7 @@ class _UpdatePageState extends State<UpdatePage> {
             child: Column(
               children: [
                 TextField(
-                  controller: titleController,
+                  controller: viewmodel.titleController,
                   decoration: InputDecoration(
                     labelText: "Post Title",
                     border: OutlineInputBorder(),
@@ -79,7 +48,7 @@ class _UpdatePageState extends State<UpdatePage> {
                   height: 15,
                 ),
                 TextField(
-                  controller: bodyController,
+                  controller: viewmodel.bodyController,
                   decoration: InputDecoration(
                     labelText: "Post Body",
                     border: OutlineInputBorder(),
@@ -91,7 +60,7 @@ class _UpdatePageState extends State<UpdatePage> {
                 SizedBox(height: 30,),
                 RaisedButton(
                   onPressed: () {
-                    _apiCreatePost();
+                    viewmodel.apiCreatePost(context);
                   },
                   child: Text ("Update"),
                   color: Colors.blue,
@@ -100,7 +69,7 @@ class _UpdatePageState extends State<UpdatePage> {
             ),
           ),
 
-          isLoading ? Center(child: CircularProgressIndicator()) : SizedBox.shrink(),
+          viewmodel.isLoading ? Center(child: CircularProgressIndicator()) : SizedBox.shrink(),
         ],
       ),
     );
