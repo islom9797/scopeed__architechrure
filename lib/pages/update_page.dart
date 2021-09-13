@@ -7,6 +7,7 @@ class UpdatePage extends StatefulWidget {
 
   static final String id = "update_page";
   final Post post;
+  final Post post2;
 
   UpdatePage({this.post});
 
