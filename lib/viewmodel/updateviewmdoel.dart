@@ -1,10 +1,11 @@
 import 'package:architechrure/model/post_model.dart';
 import 'package:architechrure/services/http_request.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 
-class Updateviewmodel extends ChangeNotifier{
+class Updateviewmodel extends Model{
   bool isLoading = false;
   var titleController = TextEditingController();
   var bodyController = TextEditingController();

@@ -5,7 +5,8 @@ import 'package:architechrure/services/http_request.dart';
 import 'package:architechrure/viewmodel/homeviewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 
 import 'create_page.dart';
 
@@ -66,13 +67,13 @@ class _HomePageState extends State<HomePage> {
   //     isLoading = false;
   //   });
   // }
-  HomeViewModel viewmodel=HomeViewModel();
+  ScopedModell scopedmodel=ScopedModell();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    viewmodel.apiPostList();
+    scopedmodel.apiPostList();
   }
 
   @override
@@ -81,18 +82,18 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("SetState"),
       ),
-      body: ChangeNotifierProvider(
-        create: (context)=>viewmodel,
-        child: Consumer<HomeViewModel>(
+      body: ScopedModel<ScopedModell>(
+
+        child: ScopedModelDescendant<ScopedModell>(
           builder: (ctx,model,index)=>Stack(
             children: [
               ListView.builder(
-                itemCount: viewmodel.items.length,
+                itemCount: scopedmodel.items.length,
                 itemBuilder: (ctx, index) {
-                  return itemList (viewmodel.items[index]);
+                  return itemList (scopedmodel.items[index]);
                 },
               ),
-              viewmodel.isLoading ? Center (
+              scopedmodel.isLoading ? Center (
                 child: CircularProgressIndicator(),
               ) : SizedBox.shrink(),
 
@@ -105,7 +106,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         onPressed: (){
-          viewmodel.apiCreatePost(context);
+          scopedmodel.apiCreatePost(context);
         },
       ),
 
@@ -136,7 +137,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.indigo,
           icon: Icons.edit,
           onTap: (){
-            viewmodel.apiUpdatePost(context,post);
+            scopedmodel.apiUpdatePost(context,post);
           },
         ),
       ],
@@ -146,7 +147,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.red,
           icon: Icons.delete,
           onTap: (){
-            viewmodel.apiPostDelete(post);
+            scopedmodel.apiPostDelete(post);
           },
         ),
       ],

@@ -2,9 +2,10 @@ import 'package:architechrure/model/post_model.dart';
 import 'package:architechrure/services/http_request.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 
-class Createviewmodel extends ChangeNotifier{
+class CreateScopemodel extends Model{
   bool isLoading = false;
   var titleController = TextEditingController();
   var postController = TextEditingController();

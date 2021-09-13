@@ -4,9 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:architechrure/pages/update_page.dart';
 import 'package:architechrure/pages/create_page.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 
-class HomeViewModel extends ChangeNotifier{
+
+class ScopedModell extends Model{
 
   List <Post> items = new List();
   bool isLoading=false;
